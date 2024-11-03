@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>Transcription </title>
+{% endblock %}
+{% block body %}
+    <div class="container-md flex-column px-5 mt-3">
+        <div class="header d-flex ">
+            <div class="w-100 d-flex">
+                <h3 class="me-2">{{data.title}} </h3>
+                {% if data.status == "Processing" %}
+                <div class="spinner-border text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                {% endif %}
+            </div>
+            <a href="{{url_for('transcription', uuid=data.uuid)}}" class="btn btn-primary align-self-end"> Reload</a>
+            
+        </div>
+        <hr>
+        
+        <p class="d-inline-flex gap-1">
+            <a class="btn btn-info" data-bs-toggle="collapse" href="#collapseDetails" role="button" aria-expanded="false" aria-controls="collapseDetails">
+                Tampilkan Detail
+            </a>
+            <a class="btn btn-info"  data-bs-toggle="collapse" href="#collapsePharse" role="button" aria-expanded="false" aria-controls="collapsePharse">
+                Tampilkan List Kalimat
+            </a>
+        </p>
+
+        <div class="collapse" id="collapseDetails">
+            <div class="card card-body">
+                <p>{{data.details}}</p>
+            </div>
+        </div>
+        <div class="collapse" id="collapsePharse">
+            <div class="card card-body">
+                <ul>
+                    {% for phrase in list_phrase %}
+                        <li>{{phrase}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="mt-2 ">
+
+            <div class="container ">
+                <div class="row row-cols-2"  style="height: 200px; max-height:600px">
+                    <div class="col">
+                        <div class="col  bg-secondary  rounded-top px-2  d-flex justify-content-between">
+                            <h5 class= "m-2"> Raw </h5><i class="fa-solid fa-copy m-2"></i>
+                        </div>    
+                    </div>
+                    <div class="col">
+                        <div class="col  bg-secondary  rounded-top px-2  d-flex justify-content-between">
+                            <h5 class= "m-2"> AI </h5><i class="fa-solid fa-copy m-2"></i>
+                        </div>     
+                    </div>
+                    <div class="col">
+                        <div class=" border  position-relative overflow-y-auto p-3" style="max-height:480px">
+                            <p class="text-start"> {{data.text_raw}}</p>
+                        </div>    
+                    </div>
+                    <div class="col">
+                        <div class="  border  text-start position-relative overflow-y-auto p-3" style="max-height:480px">
+                            {{data.text_formatted|safe}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

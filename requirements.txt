@@ -1,0 +1,5 @@
+flask
+flask-sqlalchemy
+azure-cognitiveservices-speech
+pydub
+google-generativeai
