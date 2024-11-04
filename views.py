@@ -23,7 +23,6 @@ def new_job():
 
     if get_file_extension(audio_path) != "wav":
         audio_path = conver_to_wav(audio_path, replace=True)
-        print("######## REPLACE AUDIO | CHANE EXXTENSION", audio_path)
     
     text = ""
     job_data = Jobs(
@@ -38,10 +37,18 @@ def new_job():
     thread = threading.Thread(target=start_transcription, args=(audio_path, phrase_list, job_data.id))
     thread.start()
 
-    return "Processing", 200
+    return redirect(url_for("transcription", uuid=job_data.uuid))
 
 @app.route("/transcription/<string:uuid>")
 def transcription(uuid):
     job_data = Jobs.query.filter_by(uuid=uuid).first()
     list_phrase = job_data.phrases.split(";")
     return render_template("transcription.html", data = job_data, list_phrase=list_phrase)
+
+@app.route("/delete/<string:uuid>")
+def delete(uuid):
+    print("TRYING TO REMOVE: ", uuid)
+    job_data = Jobs.query.filter_by(uuid=uuid).first()
+    db.session.delete(job_data)
+    db.session.commit()
+    return redirect(url_for("home"))

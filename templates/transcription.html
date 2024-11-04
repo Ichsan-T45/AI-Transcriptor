@@ -13,7 +13,8 @@
                 </div>
                 {% endif %}
             </div>
-            <a href="{{url_for('transcription', uuid=data.uuid)}}" class="btn btn-primary align-self-end"> Reload</a>
+            <a class="btn btn-primary align-self-end mx-2" href="{{url_for('transcription', uuid=data.uuid)}}" > Reload</a>
+            <button class="btn btn-danger align-self-end mx-2" id="deleteTranscription"  data-uuid="{{data.uuid}}"> Hapus </button>
             
         </div>
         <hr>

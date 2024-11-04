@@ -23,4 +23,11 @@ $(document).ready(function() {
             $(this).parent().remove();
         });
     });
+
+    $('#deleteTranscription').click(function () {
+        const uuid = $(this).data("uuid")
+        if (confirm("Hapus data transkrip ini?")){
+            window.location = `/delete/${uuid}`
+        }
+    })
 });
