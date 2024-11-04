@@ -3,9 +3,9 @@
 <title>Home</title>
 {% endblock %}
 {% block body %}
-<div class="container-sm border border-secondary d-flex flex-column justify-content-center  flex-grow-1">
+<div class="container-lg border border-secondary d-flex flex-column justify-content-center  flex-grow-1">
     <!-- Transcription cards -->
-    <div class="row row-cols-1 overflow-y-auto g-4" style="max-height: 70vh; padding: 6vh 18vh">
+    <div class="row row-cols-1 overflow-y-auto g-4" style="max-height: 70vh;">
         {% for item in data %}
         <div class="col position-relative">
             <a href="{{url_for('transcription', uuid=item.uuid)}}" class="card btn btn-light text-start">

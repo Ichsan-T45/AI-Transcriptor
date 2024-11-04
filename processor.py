@@ -77,7 +77,6 @@ def transcript_ai_formatting(transcript_raw, details):
     generation_config = {
         "temperature": 0.2,
         "top_p": 0.9,
-        "max_output_tokens": 200,
         "response_mime_type": "text/plain",
         }
         
@@ -100,7 +99,7 @@ def transcript_ai_formatting(transcript_raw, details):
                                 generation_config=generation_config,
                                 system_instruction=system_instruction)
     result = model.generate_content(formatted).text
-    return result.removeprefix("```json\n").removesuffix("\n```")
+    return result.removeprefix("```html\n").removesuffix("\n```")
     
      
 

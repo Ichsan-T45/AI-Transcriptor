@@ -3,7 +3,7 @@
     <title>Transcription </title>
 {% endblock %}
 {% block body %}
-    <div class="container-md flex-column px-5 mt-3">
+    <div class="container-md flex-column px-1 px-md-3 mt-3">
         <div class="header d-flex ">
             <div class="w-100 d-flex">
                 <h3 class="me-2">{{data.title}} </h3>
@@ -44,25 +44,25 @@
         </div>
         <div class="mt-2 ">
 
-            <div class="container ">
-                <div class="row row-cols-2"  style="height: 200px; max-height:600px">
+            <div class="container">
+                <div class="row row-cols-2 g-1"  style="height: 200px; max-height:600px">
                     <div class="col">
-                        <div class="col  bg-secondary  rounded-top px-2  d-flex justify-content-between">
+                        <div class="col  bg-secondary  rounded-top   d-flex justify-content-between">
                             <h5 class= "m-2"> Raw </h5><i class="fa-solid fa-copy m-2"></i>
                         </div>    
                     </div>
                     <div class="col">
-                        <div class="col  bg-secondary  rounded-top px-2  d-flex justify-content-between">
+                        <div class="col  bg-secondary  rounded-top ps-1 ps-md-2  d-flex justify-content-between">
                             <h5 class= "m-2"> AI </h5><i class="fa-solid fa-copy m-2"></i>
                         </div>     
                     </div>
                     <div class="col">
-                        <div class=" border  position-relative overflow-y-auto p-3" style="max-height:480px">
+                        <div class=" border  position-relative overflow-y-auto p-1 p-md-3" style="max-height:480px">
                             <p class="text-start"> {{data.text_raw}}</p>
                         </div>    
                     </div>
                     <div class="col">
-                        <div class="  border  text-start position-relative overflow-y-auto p-3" style="max-height:480px">
+                        <div class="  border  text-start position-relative overflow-y-auto p-1 p-md-3" style="max-height:480px">
                             {{data.text_formatted|safe}}
                         </div>
                     </div>
