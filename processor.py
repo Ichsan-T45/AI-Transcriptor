@@ -84,7 +84,7 @@ def transcript_ai_formatting(transcript_raw, details):
     Ubah script wawancara ini menjadi format HTML. Pisahkan bagian Interviewer dan Narasumber. Berikan efek bold pada nama keduanya menggunakan tag span. Contoh script Output yang diharapkan: '<p><b>Interviewer:</b> Bagaimana pendapat Anda tentang... <p><b>Narasumber:</b> Saya pikir...'. 
     """
     model = GenerativeModel(  
-                                model_name="gemini-1.5-flash",
+                                model_name="gemini-1.5-pro",
                                 generation_config=generation_config,
                                 system_instruction=system_instruction)
     
@@ -95,7 +95,7 @@ def transcript_ai_formatting(transcript_raw, details):
     Berikut merupakan transkrip wawancara {details}. Perbaiki kata atau kalimat yang salah lalu bungkus dengan atrubut span html dengan style berwarna hijau 
     """
     model = GenerativeModel(  
-                                model_name="gemini-1.5-flash",
+                                model_name="gemini-1.5-pro",
                                 generation_config=generation_config,
                                 system_instruction=system_instruction)
     result = model.generate_content(formatted).text

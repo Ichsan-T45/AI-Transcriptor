@@ -12,7 +12,7 @@ $(document).ready(function() {
             // Tambahkan item ke input
             $('#phrase-list').val($('#phrase-list').val() +";"+value )
             // Kosongkan input setelah menambah item
-            $('#item-input').val = "";
+            $('#phrase-input').val("");
         } else {
             alert('Masukkan item terlebih dahulu!');
         }
@@ -30,4 +30,12 @@ $(document).ready(function() {
             window.location = `/delete/${uuid}`
         }
     })
+
+    $('#transcription-form').on('submit', function (event) {
+        // Validasi form
+        if (this.checkValidity()) {
+            // Tampilkan spinner
+            $("#uploading-spinner").removeAttr("hidden")
+        }
+    });
 });
