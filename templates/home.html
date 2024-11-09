@@ -61,13 +61,23 @@
                         <div class="mb-3">
                             <label for="FormControlTextarea1" class="form-label"> *Detail/Konteks </label>
                             <textarea class="form-control" id="FormControlTextarea1" rows="3" name="details"
-                                placeholder="TIA mewawancarai Ichsan terkait konten reels Dewan perwakilan omel-omel milik akun Instagram Bintang Emon"
+                                placeholder="wawancara terkait konten reels Dewan perwakilan omel-omel milik akun Instagram Bintang Emon"
                                 required></textarea>
                         </div>
                         <!-- file input -->
                         <div class="mb-3">
                             <label for="formFile" class="form-label">*File audio</label>
                             <input class="form-control" type="file" accept="audio/*" name="file" id="formFile" required>
+                        </div>
+                        <!-- question list input -->
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <label for="toggle-questions-input" class="form-check-label">Sertakan list pertanyaan</label>
+                                <input type="checkbox" class="form-check-input" id="toggle-questions-input">
+                            </div>
+
+                            <textarea class="form-control" name="questionList" id="questions-input" rows="3" placeholder="1. bagaimana pendapat anda..." hidden></textarea>
+
                         </div>
                         <!-- phrase input -->
                         <div class="mb-3">
@@ -83,8 +93,8 @@
                             </div>
                             <!-- hidden input to store phrase list -->
                             <input type="text" name="phraseList" id="phrase-list" hidden>
-
                         </div>
+                        
 
                     </div>
                     <div class="modal-footer">

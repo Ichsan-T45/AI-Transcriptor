@@ -38,4 +38,11 @@ $(document).ready(function() {
             $("#uploading-spinner").removeAttr("hidden")
         }
     });
+
+    $('#toggle-questions-input').click(function () {
+        const isChecked = $('#toggle-questions-input').is(":checked")
+        $("#questions-input").attr("hidden", !isChecked)
+
+
+    })
 });

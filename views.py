@@ -24,11 +24,11 @@ def new_job():
     if get_file_extension(audio_path) != "wav":
         audio_path = conver_to_wav(audio_path, replace=True)
     
-    text = ""
     job_data = Jobs(
         title=data["title"], 
         audio_path=audio_path,
         details=data["details"], 
+        question_list=data["questionList"],
         status="Processing", 
         phrases=data["phraseList"])
     db.session.add(job_data)

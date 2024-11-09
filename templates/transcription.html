@@ -26,6 +26,9 @@
             <a class="btn btn-info"  data-bs-toggle="collapse" href="#collapsePharse" role="button" aria-expanded="false" aria-controls="collapsePharse">
                 Tampilkan List Kalimat
             </a>
+            <a class="btn btn-info"  data-bs-toggle="collapse" href="#collapsePharse" role="button" aria-expanded="false" aria-controls="collapseQuestion">
+                Tampilkan List Pertanyaan
+            </a>
         </p>
 
         <div class="collapse" id="collapseDetails">
@@ -40,6 +43,12 @@
                         <li>{{phrase}}</li>
                     {% endfor %}
                 </ul>
+            </div>
+        </div>
+        <div class="collapse" id="collapsePharse">
+            <div class="card card-body">
+                
+                {{data.question_list}}
             </div>
         </div>
         <div class="mt-2 ">
@@ -58,12 +67,12 @@
                     </div>
                     <div class="col">
                         <div class=" border  position-relative overflow-y-auto p-1 p-md-3" style="max-height:480px">
-                            <p class="text-start"> {{data.text_raw}}</p>
+                            <p class="text-start"> {{data.text_formatted}}</p>
                         </div>    
                     </div>
                     <div class="col">
                         <div class="  border  text-start position-relative overflow-y-auto p-1 p-md-3" style="max-height:480px">
-                            {{data.text_formatted|safe}}
+                            {{data.text_ai|safe}}
                         </div>
                     </div>
                 </div>

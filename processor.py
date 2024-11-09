@@ -10,6 +10,14 @@ import os
 # Konfigurasi Azure Speech Service
 speech_key = os.getenv("SPEECH_KEY")
 service_region = os.getenv("SPEECH_REGION")
+genai.configure(api_key=os.getenv("GEMINI_API="))
+
+generation_config = {
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "response_mime_type": "text/plain",
+    }
+
 AUDIO_EXTENSIONS = [
     "aiff",
     "flac",
@@ -19,6 +27,7 @@ AUDIO_EXTENSIONS = [
     "wav",
     "ogg",
 ]
+
 
 def start_transcription(audio_path, phrase_list:list, job_id: Jobs):
     print("connecting with : ",speech_key, " on: ", service_region)
@@ -54,7 +63,16 @@ def start_transcription(audio_path, phrase_list:list, job_id: Jobs):
             print("Recognition Finished")
             job_data = db.session.query(Jobs).get(job_id)
             job_data.status="Done"
-            job_data.text_formatted=transcript_ai_formatting(job_data.text_raw, job_data.details)
+            
+            # Fix transcription with Gemini API
+            transcript = ai_formatting(job_data.text_raw)
+            job_data.formatted = transcript
+            
+            transcript = ai_insert_questions(transcript, job_data.question_list)
+            transcript = ai_spellcheck(transcript, job_data.details)
+            
+            job_data.text_ai = transcript
+            
             db.session.commit()
             speech_recognizer.stop_continuous_recognition_async()
             try:
@@ -71,17 +89,12 @@ def start_transcription(audio_path, phrase_list:list, job_id: Jobs):
     print ("\nSTARTING RECOGNITION JOB : ")
     # print ("STARTING RECOGNITION JOB : ")
 
-
-def transcript_ai_formatting(transcript_raw, details):
-    genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-    generation_config = {
-        "temperature": 0.2,
-        "top_p": 0.9,
-        "response_mime_type": "text/plain",
-        }
-        
+def ai_formatting(transcript_raw):
     system_instruction = f"""
-    Ubah script wawancara ini menjadi format HTML. Pisahkan bagian Interviewer dan Narasumber. Berikan efek bold pada nama keduanya menggunakan tag span. Contoh script Output yang diharapkan: '<p><b>Interviewer:</b> Bagaimana pendapat Anda tentang... <p><b>Narasumber:</b> Saya pikir...'. 
+    Ubah script wawancara ke dalam format HTML. Pisahkan bagian Interviewer dan Narasumber. Berikan efek bold pada nama keduanya menggunakan tag span. Contoh script Output yang diharapkan: '<p><b>Interviewer:</b> Bagaimana pendapat Anda tentang... <p><b>Narasumber:</b> Saya pikir...'. 
+    Pastikan poin berikut:
+    1. Tidak ada teks/saran/informasi tambahan selain text transkrip yang telah di format.
+    2. Abaikan tag tingkat atas seperty tag html, head dan body.
     """
     model = GenerativeModel(  
                                 model_name="gemini-1.5-pro",
@@ -91,15 +104,37 @@ def transcript_ai_formatting(transcript_raw, details):
     
     formatted = model.generate_content(transcript_raw).text
 
+    return formatted
+
+def ai_insert_questions(transcript, questions):
     system_instruction = f"""
-    Berikut merupakan transkrip wawancara {details}. Perbaiki kata atau kalimat yang salah lalu bungkus dengan atrubut span html dengan style berwarna hijau 
+    Berikut merupakan transkrip wawancara dengan list pertanyaan sebagai berikut: ### {questions} ###. Ubahlah pertanyaan Interviewer yang ada di transkrip agar sesuai dengan list pertanyaan. 
+    Pastikan poin berikut: 
+    1. Tidak ada teks/saran/informasi tambahan selain text transkrip yang telah disunting.
+    2. Tidak ada teks narasumber yang disunting dari teks input"""
+    
+    model = GenerativeModel(  
+                                model_name="gemini-1.5-pro",
+                                generation_config=generation_config,
+                                system_instruction=system_instruction)
+    result = model.generate_content(transcript).text
+    return result
+
+def ai_spellcheck(transcript, details):
+    system_instruction = f"""
+    Sunting transkrip wawancara yang di input dengan detail: ###{details} ###. Analisis lalu lakukan perbaikan kata yang salah transkrip kemudian bungkus dengan atribut span html dengan style berwarna hijau. Hapus semua kata pengisi atau filler yang berlebihan seperti uh, ehh, hmm, dan sejenisnya.
+    Pastikan poin berikut: 
+    1. Tidak ada teks/saran/informasi tambahan selain hasil suntingan teks input.
+    2. Hilangkan
     """
     model = GenerativeModel(  
                                 model_name="gemini-1.5-pro",
                                 generation_config=generation_config,
                                 system_instruction=system_instruction)
-    result = model.generate_content(formatted).text
-    return result.removeprefix("```html\n").removesuffix("\n```")
+    result = model.generate_content(transcript).text
+    return result
+
+
     
      
 
