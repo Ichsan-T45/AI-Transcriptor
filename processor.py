@@ -10,7 +10,7 @@ import os
 # Konfigurasi Azure Speech Service
 speech_key = os.getenv("SPEECH_KEY")
 service_region = os.getenv("SPEECH_REGION")
-genai.configure(api_key=os.getenv("GEMINI_API="))
+genai.configure(api_key=os.getenv("GEMINI_API"))
 
 generation_config = {
     "temperature": 0.2,
@@ -66,7 +66,7 @@ def start_transcription(audio_path, phrase_list:list, job_id: Jobs):
             
             # Fix transcription with Gemini API
             transcript = ai_formatting(job_data.text_raw)
-            job_data.formatted = transcript
+            job_data.text_formatted = transcript
             
             transcript = ai_insert_questions(transcript, job_data.question_list)
             transcript = ai_spellcheck(transcript, job_data.details)

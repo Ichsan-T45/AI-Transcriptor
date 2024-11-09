@@ -10,7 +10,7 @@ $(document).ready(function() {
             $('#phrase-list').append(newItem);
             
             // Tambahkan item ke input
-            $('#phrase-list').val($('#phrase-list').val() +";"+value )
+            $('#phrase-container').val($('#phrase-container').val() +";"+value )
             // Kosongkan input setelah menambah item
             $('#phrase-input').val("");
         } else {
